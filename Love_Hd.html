@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>丹丹的星空情书</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            height: 100vh;
+            overflow: hidden;
+            font-family: cursive;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #a18cd1);
+            /* 替换原黑色背景 */
+        }
+
+        /* 信封封面 */
+        .envelope {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 1s, opacity 1s;
+            z-index: 1000;
+            background: #f8d7da;
+            /* 恢复基础背景色 */
+        }
+
+        .envelope::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(45deg,
+                    #ff3366 0px,
+                    #ff3366 20px,
+                    transparent 20px,
+                    transparent 40px);
+            opacity: 0.1;
+            animation: moveBG 20s linear infinite;
+        }
+
+        /* 封面爱心 */
+        .cover-heart {
+            font-size: 80px;
+            color: #ff3366;
+            cursor: pointer;
+            filter: drop-shadow(0 0 20px rgba(255, 51, 102, 0.5));
+            animation: heartbeat 1.5s ease-in-out infinite,
+                float 3s ease-in-out infinite;
+        }
+
+        /* 第二页内容 */
+        .romantic-content {
+            background: transparent;
+        }
+
+        /* 容器样式 */
+        .container {
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        /* 标题样式 */
+        .title {
+            font-size: 4em;
+            /* 原3em */
+            color: #ff3366;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            /* 增强阴影 */
+            margin-bottom: 25px;
+            /* 原15px */
+            animation: float 3s ease-in-out infinite;
+            line-height: 1.2;
+            /* 新增行高 */
+        }
+
+        .message {
+            font-size: 2em;
+            /* 新增：原约1.5em */
+            line-height: 1.8;
+            /* 新增行高 */
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            margin: 20px 0;
+            /* 新增边距 */
+            animation: textGlow 3s ease-in-out infinite;
+            /* 新增动画 */
+        }
+
+        /* 爱心雨 */
+        .hearts .heart {
+            position: absolute;
+            color: #ff3366;
+            animation: fall linear forwards;
+            opacity: 0.8;
+        }
+
+        /* 按钮样式 */
+        .love-btn {
+            margin-top: 25px;
+            padding: 12px 35px;
+            font-size: 1.1em;
+            background: #ff3366;
+            border: none;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 51, 102, 0.3);
+        }
+
+        /* 最终文字 */
+        .final-text {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3em;
+            color: #ff3366;
+            opacity: 0;
+            text-shadow: 0 0 20px rgba(255, 51, 102, 0.5);
+            pointer-events: none;
+        }
+
+        /* 新增修复样式 */
+        .hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            top: 0;
+            left: 0;
+        }
+
+        /* 添加在现有动画定义之后 */
+        .hearts .heart {
+            animation: fall linear forwards;
+            animation-duration: inherit;
+            /* 使动画时长继承自元素样式 */
+        }
+
+        /* 动画定义 */
+        @keyframes heartbeat {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes textGlow {
+
+            0%,
+            100% {
+                text-shadow: 0 0 10px #ff3366,
+                    0 0 20px #ff3366,
+                    1px 1px 2px rgba(0, 0, 0, 0.2);
+            }
+
+            50% {
+                text-shadow: 0 0 30px #ff3366,
+                    0 0 40px #ff3366,
+                    2px 2px 4px rgba(0, 0, 0, 0.3);
+            }
+        }
+
+        @keyframes textGlow {
+
+            0%,
+            100% {
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2),
+                    0 0 10px rgba(255, 255, 255, 0.5);
+            }
+
+            50% {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3),
+                    0 0 20px rgba(255, 255, 255, 0.8);
+            }
+        }
+
+        @keyframes textGlow {
+
+            0%,
+            100% {
+                text-shadow: 0 0 10px #ff3366, 0 0 20px #ff3366;
+            }
+
+            50% {
+                text-shadow: 0 0 30px #ff3366, 0 0 40px #ff3366;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 3em;
+                /* 原2em */
+                margin-bottom: 15px;
+            }
+
+            .message {
+                font-size: 1.5em;
+                /* 移动端适当缩小 */
+                line-height: 1.6;
+            }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+        }
+
+        @keyframes textGrowth {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.5);
+            }
+        }
+
+        .final-text {
+            /* 修改原有动画属性 */
+            animation: textGrowth 2s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 封面 -->
+    <div class="envelope">
+        <div class="cover-heart" onclick="openEnvelope()">❤</div>
+    </div>
+
+    <!-- 内容页 -->
+    <div class="romantic-content" id="romanticContent">
+        <div class="hearts" id="hearts"></div>
+        <div class="container">
+            <h1 class="title">丹丹 我爱你吖</h1>
+            <p class="message">
+                遇见你是最美的意外，<br>
+                你的笑容是我每天的阳光，<br>
+                愿用余生为你编写幸福的代码，<br>
+                你愿意成为我人生的唯一变量吗？
+            </p>
+            <button class="love-btn" onclick="showLove()">❤ 我愿意 ❤</button>
+        </div>
+        <div class="final-text" id="finalText"></div>
+    </div>
+
+    <script>
+        // 修复后的JavaScript代码
+        let clickCount = 0;
+        const maxClicks = 7;
+        let heartInterval;
+
+        // 开启信封
+        function openEnvelope() {
+            document.querySelector('.envelope').style.opacity = '0.5'; // 新增透明度变化
+            document.querySelector('.envelope').style.transform = 'rotateX(180deg) scale(2)'; // 修改缩放值
+
+            // 缩短过渡时间
+            setTimeout(() => {
+                document.getElementById('romanticContent').style.opacity = 1;
+                document.getElementById('romanticContent').style.pointerEvents = 'auto';
+                startHearts();
+                document.querySelector('.envelope').style.display = 'none'; // 最终隐藏
+            }, 800); // 时间从1000ms改为800ms
+        }
+
+        // 修复的爱心雨函数
+        function startHearts() {
+            heartInterval = setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.style.left = Math.random() * 100 + 'vw';
+                const duration = Math.random() * 2 + 1.5;
+                heart.style.animation = `fall ${duration}s linear forwards`; // 修改此行
+                heart.style.fontSize = Math.random() * 20 + 20 + 'px';
+                heart.innerHTML = '❤';
+                document.getElementById('hearts').appendChild(heart);
+                setTimeout(() => heart.remove(), duration * 1000); // 修改此行
+            }, 250);
+        }
+
+        // 情话展示
+        const loveMessages = [
+            "你是我生命中最优雅的算法",
+            "我的心里只有你一个endpoint",
+            "我们的爱情像永不停歇的Event Loop",
+            "你是我永不超时的长连接",
+            "愿做你专属的守护进程",
+            "你是我最完美的NP完全解",
+            "我们的爱情复杂度是O(1)"
+        ];
+
+        // 优化后的情话展示函数
+        function showLove() {
+            const btn = document.querySelector('.love-btn');
+            btn.style.transform = 'scale(0.95)';
+
+            if (clickCount < maxClicks) {
+                btn.textContent = loveMessages[clickCount];
+                clickCount++;
+            }
+
+            if (clickCount === maxClicks) {
+                clearInterval(heartInterval);
+
+                // 修改渐隐逻辑（约第234行）
+                document.querySelectorAll('.title, .message').forEach(el => {
+                    el.style.animation = 'fadeOut 1.5s ease-out forwards';
+                });
+
+                setTimeout(() => {
+                    const finalText = document.getElementById('finalText');
+                    finalText.textContent = '贺丹 ❤ 我爱你';
+                    finalText.style.animation = 'textGrowth 2s ease-out forwards, textGlow 2s ease-in-out infinite';
+                    btn.style.display = 'none';
+                }, 1500);
+            }
+
+            setTimeout(() => btn.style.transform = 'scale(1)', 500);
+        }
+
+        // 横屏提示（保持不变）
+        window.addEventListener('resize', () => {
+            if (window.innerHeight > window.innerWidth) {
+                alert("💡 温馨提示：横屏观看效果更佳哦～");
+            }
+        });
+    </script>
+</body>
+
+</html>
